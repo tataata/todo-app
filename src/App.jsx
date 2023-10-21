@@ -1,12 +1,18 @@
-import { useState } from 'react'
 import './App.css'
+import List from './List'
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
     <>
-    <p>Hello</p>
+     <header>
+        <h1>Todo list</h1>
+      </header>
+      <main>
+        <List /> 
+      </main>
+      <footer>
+        <p>Have fun!</p>
+      </footer>
     </>
   )
 }
