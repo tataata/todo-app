@@ -11,7 +11,7 @@ This is a simple Todo app that is built for practicing CRUD (Create, Read, Updat
 
 
 ## Tools
-- (React)[https://react.dev/] with (vite)[https://vitejs.dev/] as a boilerplate for the project.
+- [React](https://react.dev/) with [vite](https://vitejs.dev/) as a boilerplate for the project.
 
 ## Setup
 1. Navigate to the root folder of the project and run `npm install`
