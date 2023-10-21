@@ -3,7 +3,7 @@ import './App.css'
 import List from './List'
 
 function App() {
-  const [ tasks ] = useState(
+  const [ tasks, setTasks ] = useState(
     [
       { task: 'Display list of items', status: 'closed', id: '01' },
       { task: 'Remove todo', status: 'open', id: '02' },
@@ -12,6 +12,11 @@ function App() {
       { task: 'Style the app', status: 'open', id: '05' },
     ]
   )
+  
+  const deleteTask = (id) => {
+    let remainingTasks = tasks.filter(item => item.id !== id)
+    setTasks(remainingTasks);
+  }
 
   return (
     <>
@@ -19,7 +24,7 @@ function App() {
         <h1>Todo list</h1>
       </header>
       <main>
-        <List tasks={tasks} /> 
+        <List tasks={tasks} deleteItem={deleteTask} /> 
       </main>
       <footer>
         <p>Have fun!</p>
