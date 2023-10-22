@@ -1,21 +1,19 @@
 import { useState } from 'react'
+import { v4 as uuid } from "uuid"; //import uuid v4
 import './App.css'
 import List from './List'
+import AddItem from './AddItem'
 
 function App() {
-  const [ tasks, setTasks ] = useState(
-    [
-      { task: 'Display list of items', status: 'closed', id: '01' },
-      { task: 'Remove todo', status: 'open', id: '02' },
-      { task: 'Edit todo', status: 'open', id: '03' },
-      { task: 'Create todo', status: 'open', id: '04' },
-      { task: 'Style the app', status: 'open', id: '05' },
-    ]
-  )
+  const [ tasks, setTasks ] = useState([])
   
   const deleteTask = (id) => {
     let remainingTasks = tasks.filter(item => item.id !== id)
     setTasks(remainingTasks);
+  }
+
+  const addTask = (text) => {
+    setTasks([...tasks, {task: text, status: 'open', id: uuid() }])
   }
 
   return (
@@ -24,6 +22,7 @@ function App() {
         <h1>Todo list</h1>
       </header>
       <main>
+        <AddItem addTask={addTask} />
         <List tasks={tasks} deleteItem={deleteTask} /> 
       </main>
       <footer>
