@@ -16,7 +16,7 @@ function AddItem( { addTask } ) {
           setText(event.target.value);
         }}
       />
-      <button>Add Task</button>
+      <button disabled={text.length < 1}>Add Task</button>
     </form>
   );
 }
