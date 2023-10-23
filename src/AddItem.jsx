@@ -1,36 +1,36 @@
-import { useState, useRef, useId } from "react"
-import './AddItem.css'
+import { useState, useRef, useId } from "react";
+import "./AddItem.css";
 
-function AddItem( { addTask } ) {
+function AddItem({ addTask }) {
   // Get the value of the input via useState
   // -- when I want to provide instant validation feedback
   // -- when I want to reset the value on submition
-  const [ text, setText ] = useState('')
-  const [ enteredTextIsValid, setEnteredTextIsValid ] = useState(true)
+  const [text, setText] = useState("");
+  const [enteredTextIsValid, setEnteredTextIsValid] = useState(true);
 
   // Get the value of the input via ref
   // Ref is ok when I need a value only once, on submition
-  const textInputRef = useRef()
+  const textInputRef = useRef();
 
-  const todoItemId = useId()
+  const todoItemId = useId();
 
   const handlerFormSubmit = (event) => {
-    event.preventDefault()
-    const enteredText = textInputRef.current.value
+    event.preventDefault();
+    const enteredText = textInputRef.current.value;
     // Check if the input is empty
-    if (enteredText.trim() === '') {
+    if (enteredText.trim() === "") {
       setEnteredTextIsValid(false);
-      return // stop function here
+      return; // stop function here
     } else {
       setEnteredTextIsValid(true);
     }
-    addTask(text)
-    setText("")
-    console.log(text + ' <-- grabbed with useState')
-    console.log(enteredText + ' <-- grabbed with useRef')
-  }
+    addTask(text);
+    setText("");
+    console.log(text + " <-- grabbed with useState");
+    console.log(enteredText + " <-- grabbed with useRef");
+  };
 
-  const textInputClasses = enteredTextIsValid ? '' : 'form-invalid'
+  const textInputClasses = enteredTextIsValid ? "" : "form-invalid";
 
   return (
     <form onSubmit={handlerFormSubmit} className={textInputClasses}>
@@ -47,7 +47,9 @@ function AddItem( { addTask } ) {
         }}
       />
       <button>Add Task</button>
-      {!enteredTextIsValid && <p className="error-message">The field can't be empty</p>}
+      {!enteredTextIsValid && (
+        <p className="error-message">The field can't be empty</p>
+      )}
     </form>
   );
 }
