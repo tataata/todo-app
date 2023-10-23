@@ -6,6 +6,7 @@ function AddItem( { addTask } ) {
   // -- when I want to provide instant validation feedback
   // -- when I want to reset the value on submition
   const [ text, setText ] = useState('')
+  const [ enteredTextIsValid, setEnteredTextIsValid ] = useState(true)
 
   // Get the value of the input via ref
   // Ref is ok when I need a value only once, on submition
@@ -13,15 +14,26 @@ function AddItem( { addTask } ) {
 
   const todoItemId = useId()
 
+  const handlerFormSubmit = (event) => {
+    event.preventDefault()
+    const enteredText = textInputRef.current.value
+    // Check if the input is empty
+    if (enteredText.trim() === '') {
+      setEnteredTextIsValid(false);
+      return // stop function here
+    } else {
+      setEnteredTextIsValid(true);
+    }
+    addTask(text)
+    setText("")
+    console.log(text + ' <-- grabbed with useState')
+    console.log(enteredText + ' <-- grabbed with useRef')
+  }
+
+  const textInputClasses = enteredTextIsValid ? '' : 'form-invalid'
+
   return (
-    <form onSubmit={(event) => {
-      event.preventDefault()
-      addTask(text)
-      setText("")
-      console.log(text + ' <-- grabbed with useState')
-      const enteredText = textInputRef.current.value
-      console.log(enteredText + ' <-- grabbed with useRef')
-    }}>
+    <form onSubmit={handlerFormSubmit} className={textInputClasses}>
       <label htmlFor="{todoItemId}">What to do?</label>
       <input
         id="{todoItemId}"
@@ -34,7 +46,8 @@ function AddItem( { addTask } ) {
           setText(event.target.value);
         }}
       />
-      <button disabled={text.length < 1}>Add Task</button>
+      <button>Add Task</button>
+      {!enteredTextIsValid && <p className="error-message">The field can't be empty</p>}
     </form>
   );
 }

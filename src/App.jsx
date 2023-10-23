@@ -13,7 +13,7 @@ function App() {
   }
 
   const addTask = (text) => {
-    setTasks([...tasks, {task: text, status: 'closed', id: uuid() }])
+    setTasks([...tasks, {task: text, status: 'open', id: uuid() }])
   }
 
   return (
