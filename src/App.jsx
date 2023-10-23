@@ -12,8 +12,8 @@ function App() {
     setTasks(remainingTasks);
   }
 
-  const addTask = (text) => {
-    setTasks([...tasks, {task: text, status: 'open', id: uuid() }])
+  const addTask = (textOfItem) => {
+    setTasks([...tasks, {task: textOfItem, status: 'open', id: uuid() }])
   }
 
   return (

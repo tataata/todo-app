@@ -1,55 +1,39 @@
-import { useState, useRef, useId } from "react"
+import { Formik, Form, Field, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
 import './AddItem.css'
 
-function AddItem( { addTask } ) {
-  // Get the value of the input via useState
-  // -- when I want to provide instant validation feedback
-  // -- when I want to reset the value on submition
-  const [ text, setText ] = useState('')
-  const [ enteredTextIsValid, setEnteredTextIsValid ] = useState(true)
 
-  // Get the value of the input via ref
-  // Ref is ok when I need a value only once, on submition
-  const textInputRef = useRef()
+const AddItems = (props) => (
+  <div className="AddItems">
+    <Formik
+      // Replace state with this:
+      initialValues={{ textOfItem: ''}}
+      // validation
+      validationSchema={ Yup.object({
+        textOfItem: Yup.string()
+        .max(30, 'Task cannot be longer than 30 letters!')
+        .min(3, 'Task needs to be at least 3 letters')
+        .required('Please enter a to do')
 
-  const todoItemId = useId()
+      })}
+      onSubmit={(values , { resetForm }) => {
+        console.log(values);
+        // Change what we pass to addTask
+        props.addTask(values.textOfItem)
+        // Reset the from 
+        resetForm({
+          values: { textOfItem: ''}
+        })
+      }}
+    > 
+      <Form >
+          <Field type='text' placeholder='Add a to do' name='textOfItem'  />
+          <button type="submit">Add</button>
+          <div><ErrorMessage name='textOfItem' /></div>
+        </Form>
+    </Formik>
 
-  const handlerFormSubmit = (event) => {
-    event.preventDefault()
-    const enteredText = textInputRef.current.value
-    // Check if the input is empty
-    if (enteredText.trim() === '') {
-      setEnteredTextIsValid(false);
-      return // stop function here
-    } else {
-      setEnteredTextIsValid(true);
-    }
-    addTask(text)
-    setText("")
-    console.log(text + ' <-- grabbed with useState')
-    console.log(enteredText + ' <-- grabbed with useRef')
-  }
+  </div>
+)
 
-  const textInputClasses = enteredTextIsValid ? '' : 'form-invalid'
-
-  return (
-    <form onSubmit={handlerFormSubmit} className={textInputClasses}>
-      <label htmlFor="{todoItemId}">What to do?</label>
-      <input
-        id="{todoItemId}"
-        ref={textInputRef}
-        placeholder="write here"
-        pattern="^[a-zA-Z0-9 ]+$"
-        type="text"
-        value={text}
-        onChange={(event) => {
-          setText(event.target.value);
-        }}
-      />
-      <button>Add Task</button>
-      {!enteredTextIsValid && <p className="error-message">The field can't be empty</p>}
-    </form>
-  );
-}
-
-export default AddItem;
+export default AddItems
