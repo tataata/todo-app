@@ -13,7 +13,15 @@ function App() {
   }
 
   const addTask = (textOfItem) => {
+    // should add the text to a new todo in state
     setTasks([...tasks, {task: textOfItem, status: 'open', id: uuid() }])
+  }
+
+  const editTask = (itemToUpdate) => {
+    // find item in array of tasks, change the task (text from input field)
+    let updatedTasks = tasks.map(item => item.id == itemToUpdate.id ? { ...item, task: itemToUpdate.task } : item)
+    // change state by calling setTasks
+    setTasks(updatedTasks)
   }
 
   return (
@@ -23,7 +31,7 @@ function App() {
       </header>
       <main>
         <AddItem addTask={addTask} />
-        <List tasks={tasks} deleteItem={deleteTask} /> 
+        <List tasks={tasks} deleteItem={deleteTask} editItem={editTask} /> 
       </main>
       <footer>
         <p>Have fun!</p>
