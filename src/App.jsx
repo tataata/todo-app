@@ -12,6 +12,12 @@ function App() {
     setTasks(remainingTasks);
   }
 
+  // delete all 2: add deleteAll handler
+  const deleteAllItems = () => {
+    console.log('delete all')
+    setTasks([])
+  }
+
   const addTask = (textOfItem) => {
     // should add the text to a new todo in state
     setTasks([...tasks, {task: textOfItem, status: 'open', id: uuid() }])
@@ -31,7 +37,8 @@ function App() {
       </header>
       <main>
         <AddItem addTask={addTask} />
-        <List tasks={tasks} deleteItem={deleteTask} editItem={editTask} /> 
+        {/* delete all 3: pass the props */}
+        <List tasks={tasks} deleteItem={deleteTask} deleteAllItems={deleteAllItems} editItem={editTask} /> 
       </main>
       <footer>
         <p>Have fun!</p>
