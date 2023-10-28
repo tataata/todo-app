@@ -14,7 +14,7 @@ const AddItems = (props) => (
         .max(30, 'Task cannot be longer than 30 letters!')
         .min(3, 'Task needs to be at least 3 letters')
         .required('Please enter a to do')
-
+        .matches(/^[a-zA-Z0-9 ]+$/, 'Enter only letters, numbers and no special symbols')
       })}
       onSubmit={(values , { resetForm }) => {
         console.log(values);
@@ -27,9 +27,9 @@ const AddItems = (props) => (
       }}
     > 
       <Form >
-          <Field type='text' placeholder='Add a to do' name='textOfItem'  />
+          <Field type='text' placeholder='Add a to do' name='textOfItem' />
           <button type="submit">Add</button>
-          <div><ErrorMessage name='textOfItem' /></div>
+          <div><p className="error-message"><ErrorMessage name='textOfItem' /></p></div>
         </Form>
     </Formik>
 
