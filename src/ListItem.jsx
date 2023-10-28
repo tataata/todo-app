@@ -25,8 +25,8 @@ function ListItem ({ item, deleteItem, editItem }){
       ) : (
         <>
          {item.task}
-         <button onClick={() => deleteItem(item.id)}>Delete</button> 
          <button onClick={ () => toggleEdit(true)}>Edit</button>
+         <button onClick={() => deleteItem(item.id)}>Delete</button>
         </>
       )}
     </li>

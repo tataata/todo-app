@@ -1,39 +1,72 @@
-import { Formik, Form, Field, ErrorMessage } from 'formik';
-import * as Yup from 'yup';
+import { useState, useRef, useId } from "react"
 import './AddItem.css'
 
+function AddItem( { addTask } ) {
+  // The state will move to the initialValues in Formik
 
-const AddItems = (props) => (
-  <div className="AddItems">
-    <Formik
-      // Replace state with this:
-      initialValues={{ textOfItem: ''}}
-      // validation
-      validationSchema={ Yup.object({
-        textOfItem: Yup.string()
-        .max(30, 'Task cannot be longer than 30 letters!')
-        .min(3, 'Task needs to be at least 3 letters')
-        .required('Please enter a to do')
-        .matches(/^[a-zA-Z0-9 ]+$/, 'Enter only letters, numbers and no special symbols')
-      })}
-      onSubmit={(values , { resetForm }) => {
-        console.log(values);
-        // Change what we pass to addTask
-        props.addTask(values.textOfItem)
-        // Reset the from 
-        resetForm({
-          values: { textOfItem: ''}
-        })
-      }}
-    > 
-      <Form >
-          <Field type='text' placeholder='Add a to do' name='textOfItem' />
-          <button type="submit">Add</button>
-          <div><p className="error-message"><ErrorMessage name='textOfItem' /></p></div>
-        </Form>
-    </Formik>
+  // Get the value of the input via useState
+  // -- when I want to provide instant validation feedback
+  // -- when I want to reset the value on submition
+  const [ text, setText ] = useState('')
+  const [ enteredTextIsValid, setEnteredTextIsValid ] = useState(true)
 
-  </div>
-)
+  // Get the value of the input via ref
+  // Ref is ok when I need a value only once, on submition
+  const textInputRef = useRef()
 
-export default AddItems
+  const todoItemId = useId()
+
+  // FORMIK: 
+  // handleFromSubmit --> in==onSubmit
+  const handlerFormSubmit = (event) => {
+    // we don't need to prevent default in Formik
+    event.preventDefault()
+    // we dn't nee it in Formik
+    const enteredText = textInputRef.current.value
+    // Check if the input is empty
+    if (enteredText.trim() === '') {
+      setEnteredTextIsValid(false);
+      return // stop function here
+    } else {
+      setEnteredTextIsValid(true);
+    }
+
+    // the values we pass here is foudn in "values" object in Formik
+    addTask(text)
+
+    // reset of the text is in resetFrom function in formik
+    setText("")
+    console.log(text + ' <-- grabbed with useState')
+    console.log(enteredText + ' <-- grabbed with useRef')
+  }
+
+  // we don't need it in Formik
+  const textInputClasses = enteredTextIsValid ? '' : 'form-invalid'
+
+  return (
+    // from is transformed into Form component
+    // onSubmit is defined in Formik 
+    <form onSubmit={handlerFormSubmit} className={textInputClasses}>
+      {/* Label and input is transformed in Field */}
+      <label htmlFor="{todoItemId}">What to do?</label>
+      <input
+        id="{todoItemId}"
+        ref={textInputRef}
+        placeholder="write here"
+        // Validation is defined with the shcma from yup
+        pattern="^[a-zA-Z0-9 ]+$"
+        type="text"
+        // Formik takes care of setting the value and reacting to the keystroke
+        value={text}
+        onChange={(event) => {
+          setText(event.target.value);
+        }}
+      />
+      {/* Validation makes sure only valid datae is passed */}
+      <button>Add Task</button>
+      {!enteredTextIsValid && <p className="error-message">The field can't be empty</p>}
+    </form>
+  );
+}
+
+export default AddItem;
