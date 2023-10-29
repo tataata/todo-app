@@ -3,6 +3,7 @@ import { v4 as uuid } from "uuid"; //import uuid v4
 import './App.css'
 import List from './List'
 import AddItem from './AddItem'
+import RandomTodo from './RandomTodo';
 
 function App() {
   // another option for updating the state 
@@ -69,6 +70,7 @@ function App() {
         {/* delete all 3: pass the props */}
         <List tasks={tasks} deleteItem={deleteTask} deleteAllItems={deleteAllItems} editItem={editTask} /> 
       </main>
+      <RandomTodo />
       <footer>
         <p>Have fun!</p>
       </footer>
