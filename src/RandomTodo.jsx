@@ -8,11 +8,14 @@ function RandomTodo() {
   // this will create the infinite loop
   // as it will be triggering the rerender ==> useEffect
   useEffect(() => {
-    fetch('https://www.boredapi.com/api/activity').then((response) => {
-      return response.json()
-    }).then((resData) => {
+    async function fetchRandomTodo() {
+      const response = await fetch('https://www.boredapi.com/api/activity')
+      const resData = await response.json()
       setRandomTodo(resData.activity)
-    })
+    }
+
+    // call the function in the scope of the useEffect
+    fetchRandomTodo()
   }, [])
   
   return (
