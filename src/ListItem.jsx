@@ -1,8 +1,15 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import EditItem from "./EditItem"
 
 function ListItem ({ item, deleteItem, editItem }){
   const [ edit, setEdit ] = useState(false)
+
+    
+  // Runs when the component is loaded onto the page:
+  useEffect(() => {
+    console.log('ListItem component is mounted -- i fire once');
+  }, [])
+  
 
   const toggleEdit = (value) => {
     // here we switch state edit from true to false, and back

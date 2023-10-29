@@ -1,6 +1,11 @@
+import { useEffect } from "react"
 import ListItem from './ListItem'
 
 function List({ tasks, deleteItem, deleteAllItems, editItem }) {
+  // check the lifecycle of the component
+  useEffect(() => {
+    console.log('List component is mounted')
+  }, []) 
 
   return (
     <>

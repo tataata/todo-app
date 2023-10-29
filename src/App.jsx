@@ -21,7 +21,7 @@ function App() {
   const addTask = (textOfItem) => {
     // should add the text to a new todo in state
     setTasks([...tasks, {task: textOfItem, status: 'open', id: uuid() }])
-    localStorage.setItem('todos', JSON.stringify([...tasks, newTask]))
+    // localStorage.setItem('todos', JSON.stringify([...tasks, newTask]))
   }
 
   const editTask = (itemToUpdate) => {

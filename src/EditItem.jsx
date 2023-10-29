@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 
 function EditItem({ item, toggleEdit, editItem }) {
   // item.task contains the text
@@ -11,6 +11,15 @@ function EditItem({ item, toggleEdit, editItem }) {
     editItem(updatedItem)
     toggleEdit(false)
   }
+
+  useEffect ( () => {
+    console.log('editItem component is mounted');
+  }, [])
+
+  useEffect(()=> {
+    console.log('change of the text state in editItem component');
+  }, [ text ])
+
 
   return (
     <>
