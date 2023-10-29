@@ -1,11 +1,37 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { v4 as uuid } from "uuid"; //import uuid v4
 import './App.css'
 import List from './List'
 import AddItem from './AddItem'
 
 function App() {
-  const [ tasks, setTasks ] = useState([])
+  // another option for updating the state 
+  const [ tasks, setTasks ] = useState(() => {
+    let savedTasks = localStorage.getItem('todos')
+    let parsedTasks = JSON.parse(savedTasks)
+    return parsedTasks || ''
+  })
+
+  
+  useEffect(() => {
+    console.log('App component is mounted')
+    // // one option for writing
+    // // get todos from localStorage
+    // let savedTasks = localStorage.getItem('todos')
+    // // use the JS function JSON.parse() to convert text into a JS object
+    // let parsedTasks = JSON.parse(savedTasks)
+    // // check if there is data in localStorage
+    // if(parsedTasks) {
+    //   // add the todos into the state
+    //   setTasks([ ...parsedTasks ])
+    // }
+  }, [])
+
+  useEffect(() => {
+    console.log('State of tasks has changed')
+    // update localstorage here 
+    localStorage.setItem('todos', JSON.stringify(tasks))
+  }, [tasks])
 
   const deleteTask = (id) => {
     let remainingTasks = tasks.filter(item => item.id !== id)
