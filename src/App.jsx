@@ -6,7 +6,7 @@ import AddItem from './AddItem'
 
 function App() {
   const [ tasks, setTasks ] = useState([])
-  
+
   const deleteTask = (id) => {
     let remainingTasks = tasks.filter(item => item.id !== id)
     setTasks(remainingTasks);
@@ -21,6 +21,7 @@ function App() {
   const addTask = (textOfItem) => {
     // should add the text to a new todo in state
     setTasks([...tasks, {task: textOfItem, status: 'open', id: uuid() }])
+    localStorage.setItem('todos', JSON.stringify([...tasks, newTask]))
   }
 
   const editTask = (itemToUpdate) => {
@@ -29,6 +30,8 @@ function App() {
     // change state by calling setTasks
     setTasks(updatedTasks)
   }
+
+
 
   return (
     <>

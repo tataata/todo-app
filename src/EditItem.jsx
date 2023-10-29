@@ -11,6 +11,7 @@ function EditItem({ item, toggleEdit, editItem }) {
     editItem(updatedItem)
     toggleEdit(false)
   }
+
   return (
     <>
       <form onSubmit={handleSubmit}>
