@@ -1,6 +1,6 @@
 const express = require('express')
-// ...rest of the initial code omitted for simplicity.
-const { query, body, validationResult } = require('express-validator');
+// // ...rest of the initial code omitted for simplicity.
+// const { query, body, validationResult } = require('express-validator');
 
 const app = express()
 const port = 3030
@@ -10,10 +10,10 @@ const port = 3030
 app.use(express.json());
 
 let mockdata = [
-  {task: "sleep", status: "open", id: "01"},
-  {task: "eat", status: "open", id: "02"},
-  {task: "make a call", status: "open", id: "03"},
-  {task: "write", status: "open", id: "04"},
+  {text: "sleep", status: "open", id: "01"},
+  {text: "eat", status: "open", id: "02"},
+  {text: "make a call", status: "open", id: "03"},
+  {text: "write", status: "open", id: "04"},
 ]
 
 // export default mockdata /
@@ -33,26 +33,35 @@ app.get('/todos', (req, res) => {
     data: mockdata
   })
 })
+
+// POST todos
+app.post('/todos', (req, res) => {
+  console.log(req.body);
+  res.status(201).json({
+    success: true,
+    message: 'Data was saved'
+  })
+})
   
 
-// Create schema for valid todo:
-const validTask = [
-  body('task')
-    .notEmpty()
-    .withMessage('Please enter a task. It should be a string or sentence')
-    .trim()
-    .escape(),
-  body('status')
-    .isIn(['open', 'done'])
-    .withMessage('Please enter a valid status')
-    .trim()
-    .escape(),
-  body('id')
-    .notEmpty()
-    .withMessage('Add id')
-    .trim()
-    .escape(),
-]
+// // Create schema for valid todo:
+// const validTask = [
+//   body('task')
+//     .notEmpty()
+//     .withMessage('Please enter a task. It should be a string or sentence')
+//     .trim()
+//     .escape(),
+//   body('status')
+//     .isIn(['open', 'done'])
+//     .withMessage('Please enter a valid status')
+//     .trim()
+//     .escape(),
+//   body('id')
+//     .notEmpty()
+//     .withMessage('Add id')
+//     .trim()
+//     .escape(),
+// ]
 
 
 app.listen(port, () => {
@@ -68,7 +77,7 @@ app.use('*', (req, res, next) => {
   //   message: `Can't find the ${req.originalUrl} on the server :-(`
   // })
   let err = new Error(`Can't find the ${req.originalUrl} on the server global :-(`);
-  err.statusCode = 404;
+  err.statusCode = 404; 
   next(err);
 });
 
