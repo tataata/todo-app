@@ -1,9 +1,21 @@
 const express = require('express')
 // // ...rest of the initial code omitted for simplicity.
 // const { query, body, validationResult } = require('express-validator');
+// add validator
+const { query, body, validationResult } = require('express-validator');
 
 const app = express()
 const port = 3030
+
+
+app.get('/hello', query('person').notEmpty().escape(), (req, res) => {
+  const result = validationResult(req);
+  if (result.isEmpty()) {
+    return res.send(`Hello, ${req.query.person}!`);
+  }
+  res.send({ errors: result.array() });
+});
+
 
 // Middleware to read the incoming data in json format: 
 // First send a request without the middlware so that we see that we need it! (data is undefined otherwise)
@@ -34,13 +46,42 @@ app.get('/todos', (req, res) => {
   })
 })
 
+// Create schema for valid todo:
+const validTask = [
+  body('task')
+    .notEmpty()
+    .withMessage('Please enter a task. It should be a string or sentence')
+    .trim()
+    .escape(),
+  body('status')
+    .isIn(['open', 'done'])
+    .withMessage('Please enter a valid status')
+    .trim()
+    .escape(),
+  body('id')
+    .notEmpty()
+    .withMessage('Add id')
+    .trim()
+    .escape(),
+]
+
 // POST todos
-app.post('/todos', (req, res) => {
+app.post('/todos', validTask, (req, res) => {
   console.log(req.body);
-  res.status(201).json({
-    success: true,
-    message: 'Data was saved'
-  })
+  // res.status(201).json({
+  //   success: true,
+  //   message: 'Data was saved'
+  // })
+  const result = validationResult(req);
+  if (result.isEmpty()) {
+    res.status(201).json({
+      success: true,
+      message: 'Data was saved'
+    })
+  } else {
+    res.status(400).send({ errors: result.array() });
+  }
+
 })
   
 
