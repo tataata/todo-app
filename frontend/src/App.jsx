@@ -7,38 +7,11 @@ import RandomTodo from './RandomTodo';
 
 function App() {
   // another option for updating the state 
-  // const [ tasks, setTasks ] = useState(() => {
-  //   let savedTasks = localStorage.getItem('todos')
-  //   let parsedTasks = JSON.parse(savedTasks)
-  //   return parsedTasks || ''
-  // })
-
-  const [tasks, setTasks] = useState([])
-  const [errorText, setErrorText] = useState()
-
-
-  // Get the todo from backend
-  // function to get data
-  const getTodos = async () => {
-    try {
-      // request
-      let response = await fetch('http://localhost:3030/todos')
-      // read the body
-      let data = await response.json()
-      // find the todos:
-      let todosFromServer = data.todos
-      setTasks(todosFromServer)
-    } catch (error) {
-      console.log(error);
-      setErrorText('Could not get data')
-    }
-  }
-
-  useEffect(() => {
-    // replace reading from local storage with fetch api
-    // call function to get data
-    getTodos()
-  }, [])
+  const [ tasks, setTasks ] = useState(() => {
+    let savedTasks = localStorage.getItem('todos')
+    let parsedTasks = JSON.parse(savedTasks)
+    return parsedTasks || ''
+  })
 
   
   useEffect(() => {
@@ -55,11 +28,11 @@ function App() {
     // }
   }, [])
 
-  // useEffect(() => {
-  //   console.log('State of tasks has changed')
-  //   // update localstorage here 
-  //   localStorage.setItem('todos', JSON.stringify(tasks))
-  // }, [tasks])
+  useEffect(() => {
+    console.log('State of tasks has changed')
+    // update localstorage here 
+    localStorage.setItem('todos', JSON.stringify(tasks))
+  }, [tasks])
 
   const deleteTask = (id) => {
     let remainingTasks = tasks.filter(item => item.id !== id)
@@ -96,8 +69,6 @@ function App() {
         <AddItem addTask={addTask} />
         {/* delete all 3: pass the props */}
         <List tasks={tasks} deleteItem={deleteTask} deleteAllItems={deleteAllItems} editItem={editTask} /> 
-        
-        {errorText ? <p>{errorText}</p> : <></>}
       </main>
       <RandomTodo />
       <footer>

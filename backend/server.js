@@ -3,9 +3,15 @@ const express = require('express')
 // const { query, body, validationResult } = require('express-validator');
 // add validator
 const { query, body, validationResult } = require('express-validator');
+const corsHeaders = require("./middleware/cors");
+const cors = require('cors')
 
 const app = express()
 const port = 3030
+
+// Middleware to read the incoming data in json format: 
+app.use(express.json());
+app.use(cors())
 
 
 app.get('/hello', query('person').notEmpty().escape(), (req, res) => {
@@ -17,9 +23,9 @@ app.get('/hello', query('person').notEmpty().escape(), (req, res) => {
 });
 
 
-// Middleware to read the incoming data in json format: 
+
 // First send a request without the middlware so that we see that we need it! (data is undefined otherwise)
-app.use(express.json());
+
 
 let mockdata = [
   {text: "sleep", status: "open", id: "01"},
